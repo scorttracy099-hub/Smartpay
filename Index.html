@@ -2,103 +2,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartPay - Smart Payments</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #f3f6fb;
-      color: #172554;
-    }
-
-    header {
-      background: #102c54;
-      color: white;
-      padding: 22px;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 28px;
-    }
-
-    header p {
-      margin-top: 7px;
-      color: #cbd5e1;
-    }
-
-    main {
-      max-width: 500px;
-      margin: 35px auto;
-      padding: 20px;
-    }
-
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 4px 18px #00000010;
-    }
-
-    h2 {
-      margin-bottom: 12px;
-    }
-
-    p {
-      line-height: 1.6;
-    }
-
-    .status {
-      margin-top: 25px;
-      padding: 15px;
-      background: #e0f2fe;
-      border-radius: 10px;
-      color: #075985;
-      font-size: 14px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #64748b;
-      font-size: 13px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmartPay Dashboard</title>
+<style>
+* { box-sizing:border-box; font-family:Arial,sans-serif; }
+body { margin:0; background:#f1f5f9; color:#172554; }
+header { background:#102c54; color:white; padding:22px; }
+header h1 { margin:0; }
+header p { color:#cbd5e1; }
+main { max-width:500px; margin:25px auto; padding:16px; }
+.card { background:white; padding:22px; border-radius:15px; margin-bottom:18px; box-shadow:0 4px 15px #00000010; }
+h2 { margin-top:0; }
+label { display:block; margin:15px 0 7px; font-weight:bold; }
+input, select { width:100%; padding:14px; border:1px solid #cbd5e1; border-radius:9px; font-size:16px; }
+button { width:100%; padding:15px; margin-top:20px; border:0; border-radius:9px; background:#087bdb; color:white; font-size:16px; font-weight:bold; }
+button:active { background:#0755a0; }
+.notice { background:#e0f2fe; padding:13px; border-radius:9px; margin-top:15px; font-size:14px; }
+#result { margin-top:18px; padding:15px; background:#ecfdf5; border-radius:9px; display:none; }
+.small { color:#64748b; font-size:13px; }
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>SmartPay</h1>
-    <p>Simple. Fast. Smart Payments.</p>
-  </header>
+<header>
+<h1>SmartPay</h1>
+<p>Shopkeeper Dashboard</p>
+</header>
 
-  <main>
-    <div class="card">
-      <h2>Welcome to SmartPay</h2>
+<main>
+<div class="card">
+<h2>Create Payment Request</h2>
+<p>Enter the customer's payment details below.</p>
 
-      <p>
-        A smarter way for shops and customers
-        to make payments.
-      </p>
+<form id="paymentForm">
+<label>Customer phone number</label>
+<input id="phone" type="tel" placeholder="07XXXXXXXX" required>
 
-      <div class="status">
-        <strong>System status:</strong>
-        Development in progress.
-      </div>
-    </div>
-  </main>
+<label>Payment amount (KSh)</label>
+<input id="amount" type="number" min="1" step="1" placeholder="e.g. 1500" required>
 
-  <footer>
-    SmartPay © 2026
-  </footer>
+<label>Payment method</label>
+<select id="method">
+<option value="M-Pesa">M-Pesa</option>
+<option value="Bank Account">Bank Account</option>
+</select>
+
+<button type="submit">Create Payment Request</button>
+</form>
+
+<div class="notice">
+<strong>Demo mode:</strong> This dashboard creates a simulated payment request. It does not send money or debit any account.
+</div>
+
+<div id="result"></div>
+</div>
+
+<div class="card">
+<h2>Shop Information</h2>
+<p>Shop: SmartPay Demo Store</p>
+<p>Status: Development</p>
+<p class="small">Real payment integration will be added after testing.</p>
+</div>
+</main>
+
+<script>
+document.getElementById("paymentForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const phone = document.getElementById("phone").value.trim();
+  const amount = Number(document.getElementById("amount").value);
+  const method = document.getElementById("method").value;
+  const result = document.getElementById("result");
+
+  if (!/^(\+254|0)[17]\d{8}$/.test(phone) || amount <= 0) {
+    alert("Enter a valid Kenyan phone number and amount.");
+    return;
+  }
+
+  result.style.display = "block";
+  result.innerHTML =
+    "<strong>Demo request created!</strong><br><br>" +
+    "Phone: " + phone + "<br>" +
+    "Amount: KSh " + amount.toLocaleString("en-KE") + "<br>" +
+    "Method: " + method + "<br>" +
+    "Status: Awaiting payment integration";
+});
+</script>
 
 </body>
 </html>
-
